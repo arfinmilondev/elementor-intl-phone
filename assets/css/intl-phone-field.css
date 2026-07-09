@@ -1,0 +1,85 @@
+/**
+ * International Phone Field CSS
+ */
+
+.mf-phone {
+	display: flex !important;
+	flex-wrap: nowrap !important;
+	align-items: center;
+	border: 1px solid #E8E2F0;
+	border-radius: 10px;
+	background-color: #F8F6FB;
+	overflow: hidden;
+	transition: border-color 0.3s ease;
+	width: 100%;
+}
+
+.mf-phone:focus-within {
+	border-color: #3b82f6; /* Example focus color */
+}
+
+.mf-phone .mf-cc {
+	width: auto !important;
+	max-width: max-content;
+	flex: 0 0 auto;
+	border: none;
+	background-color: transparent;
+	padding: 12px 16px;
+	color: #14102b;
+	font-size: 13px;
+	font-weight: 600;
+	outline: none;
+	cursor: pointer;
+	border-right: 1px solid #e5e7eb; /* Separator line */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 12px center !important;
+	background-size: 16px !important;
+	padding-right: 36px !important;
+	box-shadow: none !important;
+	border-radius: 0;
+	height: auto;
+}
+
+.mf-phone .mf-cc option {
+	padding: 12px 16px;
+	background-color: #ffffff;
+	color: #111827;
+	font-weight: 500;
+	font-size: 15px;
+}
+
+.mf-phone .mf-cc option:checked,
+.mf-phone .mf-cc option:hover,
+.mf-phone .mf-cc option:focus {
+	background-color: #1a73e8 !important;
+	color: #ffffff !important;
+}
+
+.mf-phone .mf-tel {
+	flex: 1 1 auto;
+	width: 100%;
+	border: none !important;
+	background-color: transparent !important;
+	padding: 10px 12px !important;
+	color: #374151;
+	font-size: 14px;
+	outline: none;
+	box-shadow: none !important;
+	border-radius: 0;
+	height: auto;
+}
+
+.elementor-error .mf-phone {
+	border-color: #dc3545;
+}
+
+.elementor-field-group .elementor-message-danger {
+	color: #dc3545;
+	font-size: 12px;
+	margin-top: 4px;
+	display: block;
+}
