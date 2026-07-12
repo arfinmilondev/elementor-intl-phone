@@ -58,55 +58,42 @@ final class Plugin {
 	 * Register Frontend Scripts
 	 */
 	public function register_frontend_scripts() {
-		$iti_js_url = apply_filters( 'eip_assets_iti_js', EIP_PLUGIN_URL . 'assets/vendor/intl-tel-input/js/intlTelInput.min.js' );
 		$custom_js_url = apply_filters( 'eip_assets_custom_js', EIP_PLUGIN_URL . 'assets/js/intl-phone-field.js' );
-		$utils_js_url = apply_filters( 'eip_assets_utils_js', EIP_PLUGIN_URL . 'assets/vendor/intl-tel-input/js/utils.js' );
-
-		// Register intl-tel-input core library
-		wp_register_script(
-			'intl-tel-input',
-			$iti_js_url,
-			[],
-			'17.0.0',
-			true
-		);
 
 		// Register custom field script
 		wp_register_script(
 			'eip-intl-phone-field',
 			$custom_js_url,
-			[ 'jquery', 'intl-tel-input' ],
+			[ 'jquery' ],
 			EIP_VERSION,
 			true
 		);
 
-		// Pass i18n and utils URL to JS
+		// Pass i18n
 		wp_localize_script( 'eip-intl-phone-field', 'eip_intl_phone_i18n', apply_filters( 'eip_i18n_strings', [
 			'invalid_number' => esc_html__( 'Invalid phone number.', 'elementor-intl-phone' ),
 			'required_field' => esc_html__( 'This field is required.', 'elementor-intl-phone' ),
 		] ) );
-
-		wp_localize_script( 'eip-intl-phone-field', 'eip_intl_phone_utils_url', $utils_js_url );
 	}
 
 	/**
 	 * Register Frontend Styles
 	 */
 	public function register_frontend_styles() {
-		$iti_css_url = apply_filters( 'eip_assets_iti_css', EIP_PLUGIN_URL . 'assets/vendor/intl-tel-input/css/intlTelInput.min.css' );
+		$flag_css_url = apply_filters( 'eip_assets_flag_css', EIP_PLUGIN_URL . 'assets/flag-icons/css/flag-icons.min.css' );
 		$custom_css_url = apply_filters( 'eip_assets_custom_css', EIP_PLUGIN_URL . 'assets/css/intl-phone-field.css' );
 
 		wp_register_style(
-			'intl-tel-input',
-			$iti_css_url,
+			'eip-flag-icons',
+			$flag_css_url,
 			[],
-			'17.0.0'
+			'1.0.0'
 		);
 		
 		wp_register_style(
 			'eip-intl-phone-field',
 			$custom_css_url,
-			[ 'intl-tel-input' ],
+			[ 'eip-flag-icons' ],
 			EIP_VERSION
 		);
 	}

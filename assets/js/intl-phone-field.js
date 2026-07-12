@@ -1,26 +1,57 @@
 /**
- * International Phone Field JavaScript Initialization (Native Version)
+ * International Phone Field JavaScript Initialization
  */
-
 (function ($) {
 	'use strict';
 
 	var EIP_Intl_Phone = {
 		init: function () {
-			// Update hidden field when select or input changes
-			$(document).on('change input', '.mf-cc, .mf-tel', function () {
-				var $wrapper = $(this).closest('.mf-phone');
-				var $cc = $wrapper.find('.mf-cc');
-				var $tel = $wrapper.find('.mf-tel');
-				
-				var hiddenId = $cc.data('hidden-id');
-				if (hiddenId) {
-					var fullNumber = '';
-					if ($tel.val().trim() !== '') {
-						fullNumber = $cc.val() + $tel.val().trim();
-					}
-					$('#' + hiddenId).val(fullNumber);
+			// Toggle dropdown
+			$(document).on('click', '.eip-combobox-selected', function (e) {
+				e.stopPropagation();
+				var $dropdown = $(this).siblings('.eip-combobox-dropdown');
+				$('.eip-combobox-dropdown').not($dropdown).hide(); // close others
+				$dropdown.toggle();
+			});
+
+			// Close dropdown when clicking outside
+			$(document).on('click', function (e) {
+				if (!$(e.target).closest('.eip-combobox').length) {
+					$('.eip-combobox-dropdown').hide();
 				}
+			});
+
+			// Select a country
+			$(document).on('click', '.eip-combobox-item', function () {
+				var $item = $(this);
+				var $wrapper = $item.closest('.mf-phone');
+				var $combobox = $item.closest('.eip-combobox');
+				var $selectedContainer = $combobox.find('.eip-combobox-selected');
+				
+				var dialCode = $item.data('dial');
+				var countryCode = $item.data('code');
+
+				// Update selected UI
+				$selectedContainer.html('<span class="fi fi-' + countryCode + '"></span><span class="eip-dial-code">' + dialCode + '</span>');
+				
+				// Update checkmarks in dropdown
+				$combobox.find('.eip-combobox-item').removeClass('eip-selected');
+				$combobox.find('.eip-check').css('visibility', 'hidden');
+				
+				$item.addClass('eip-selected');
+				$item.find('.eip-check').css('visibility', 'visible');
+
+				// Hide dropdown
+				$combobox.find('.eip-combobox-dropdown').hide();
+
+				// Update hidden input if tel has value
+				EIP_Intl_Phone.updateHiddenField($wrapper);
+			});
+
+			// Update hidden field when tel input changes
+			$(document).on('input change', '.mf-tel', function () {
+				var $wrapper = $(this).closest('.mf-phone');
+				EIP_Intl_Phone.updateHiddenField($wrapper);
 			});
 
 			// Hook into Elementor form submission to validate and populate hidden fields
@@ -30,16 +61,10 @@
 
 				$form.find('.mf-phone').each(function () {
 					var $wrapper = $(this);
-					var $cc = $wrapper.find('.mf-cc');
 					var $tel = $wrapper.find('.mf-tel');
-					var hiddenId = $cc.data('hidden-id');
-					
 					var telValue = $tel.val().trim();
 					
-					if (hiddenId) {
-						var fullNumber = telValue ? $cc.val() + telValue : '';
-						$('#' + hiddenId).val(fullNumber);
-					}
+					EIP_Intl_Phone.updateHiddenField($wrapper);
 
 					var $fieldGroup = $wrapper.closest('.elementor-field-group');
 					$fieldGroup.removeClass('elementor-error');
@@ -77,11 +102,31 @@
 					}
 				}
 			});
+		},
+
+		updateHiddenField: function($wrapper) {
+			var $tel = $wrapper.find('.mf-tel');
+			var hiddenId = $wrapper.data('hidden-id');
+			var $selectedItem = $wrapper.find('.eip-combobox-item.eip-selected');
+			
+			if (hiddenId && $selectedItem.length) {
+				var dialCode = $selectedItem.data('dial');
+				var telValue = $tel.val().trim();
+				var fullNumber = telValue ? dialCode + telValue : '';
+				$('#' + hiddenId).val(fullNumber);
+			}
 		}
 	};
 
 	$(window).on('elementor/frontend/init', function () {
 		EIP_Intl_Phone.init();
+	});
+
+	// Also init on load for non-elementor contexts
+	$(document).ready(function() {
+		if (typeof elementorFrontend === 'undefined') {
+			EIP_Intl_Phone.init();
+		}
 	});
 
 })(jQuery);

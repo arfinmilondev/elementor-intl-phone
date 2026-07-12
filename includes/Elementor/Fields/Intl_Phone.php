@@ -42,7 +42,7 @@ class Intl_Phone extends Field_Base {
 	 * @return array
 	 */
 	public function get_script_depends(): array {
-		return [ 'intl-tel-input', 'eip-intl-phone-field' ];
+		return [ 'eip-intl-phone-field' ];
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Intl_Phone extends Field_Base {
 	 * @return array
 	 */
 	public function get_style_depends(): array {
-		return [ 'intl-tel-input', 'eip-intl-phone-field' ];
+		return [ 'eip-flag-icons', 'eip-intl-phone-field' ];
 	}
 
 	public function render( $item, $item_index, $form ) {
@@ -95,26 +95,45 @@ class Intl_Phone extends Field_Base {
 		$form->remove_render_attribute( 'input' . $item_index, 'name' );
 
 		?>
-		<div class="mf-phone" bis_skin_checked="1">
-			<select class="mf-cc" data-hidden-id="<?php echo esc_attr( $item['custom_id'] . '_hidden' ); ?>" data-input-id="<?php echo esc_attr( $item['custom_id'] ); ?>">
-				<?php 
-				foreach ( $countries as $code => $data ) {
-					$code_lower = strtolower( $code );
-					if ( ! empty( $allowed ) && ! in_array( $code_lower, $allowed, true ) ) {
-						continue;
+		<div class="mf-phone" data-hidden-id="<?php echo esc_attr( $item['custom_id'] . '_hidden' ); ?>">
+			<div class="eip-combobox">
+				<div class="eip-combobox-selected">
+					<?php
+					$default_dial_code = '';
+					if ( isset( $countries[ strtoupper( $default ) ]['dial_code'] ) ) {
+						$default_dial_code = '+' . $countries[ strtoupper( $default ) ]['dial_code'];
 					}
-					if ( ! empty( $excluded ) && in_array( $code_lower, $excluded, true ) ) {
-						continue;
+					?>
+					<span class="fi fi-<?php echo esc_attr( strtolower( $default ) ); ?>"></span>
+					<span class="eip-dial-code"><?php echo esc_html( $default_dial_code ); ?></span>
+				</div>
+				<div class="eip-combobox-dropdown" style="display: none;">
+					<?php 
+					foreach ( $countries as $code => $data ) {
+						$code_lower = strtolower( $code );
+						if ( ! empty( $allowed ) && ! in_array( $code_lower, $allowed, true ) ) {
+							continue;
+						}
+						if ( ! empty( $excluded ) && in_array( $code_lower, $excluded, true ) ) {
+							continue;
+						}
+						
+						$dial_code = isset( $data['dial_code'] ) ? '+' . $data['dial_code'] : '';
+						$is_selected = ( $code_lower === $default );
+						$selected_class = $is_selected ? ' eip-selected' : '';
+						$check_visibility = $is_selected ? 'visible' : 'hidden';
+						
+						?>
+						<div class="eip-combobox-item<?php echo esc_attr( $selected_class ); ?>" data-code="<?php echo esc_attr( $code_lower ); ?>" data-dial="<?php echo esc_attr( $dial_code ); ?>">
+							<span class="eip-check" style="visibility: <?php echo esc_attr( $check_visibility ); ?>;">&#10003;</span>
+							<span class="fi fi-<?php echo esc_attr( $code_lower ); ?>"></span>
+							<span class="eip-dial-code"><?php echo esc_html( $dial_code ); ?></span>
+						</div>
+						<?php
 					}
-					
-					$dial_code = isset( $data['dial_code'] ) ? '+' . $data['dial_code'] : '';
-					$selected = ( $code_lower === $default ) ? 'selected' : '';
-					$display_text = strtoupper( $code ) . ' ' . $dial_code;
-					
-					echo sprintf( '<option value="%s" %s>%s</option>', esc_attr( $dial_code ), esc_attr( $selected ), esc_html( $display_text ) );
-				}
-				?>
-			</select>
+					?>
+				</div>
+			</div>
 			<input <?php $form->print_render_attribute_string( 'input' . $item_index ); ?>>
 		</div>
 		<input type="hidden" name="<?php echo esc_attr( $hidden_name ); ?>" id="<?php echo esc_attr( $item['custom_id'] . '_hidden' ); ?>" class="eip-hidden-phone" value="">

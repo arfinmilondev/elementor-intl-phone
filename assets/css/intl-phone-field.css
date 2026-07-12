@@ -6,57 +6,79 @@
 	display: flex !important;
 	flex-wrap: nowrap !important;
 	align-items: center;
-	border: 1px solid #E8E2F0;
-	border-radius: 10px;
-	background-color: #F8F6FB;
-	overflow: hidden;
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	background-color: #fff;
+	overflow: visible;
 	transition: border-color 0.3s ease;
 	width: 100%;
+	position: relative;
 }
 
 .mf-phone:focus-within {
-	border-color: #3b82f6; /* Example focus color */
+	border-color: #3b82f6; 
 }
 
-.mf-phone .mf-cc {
+.mf-phone .eip-combobox {
 	width: auto !important;
-	max-width: max-content;
 	flex: 0 0 auto;
-	border: none;
-	background-color: transparent;
-	padding: 12px 16px;
-	color: #14102b;
-	font-size: 13px;
-	font-weight: 600;
-	outline: none;
+	position: relative;
+}
+
+.mf-phone .eip-combobox-selected {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 14px;
+	color: #374151;
+	font-size: 14px;
+	font-weight: 400;
 	cursor: pointer;
-	border-right: 1px solid #e5e7eb; /* Separator line */
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
-	background-repeat: no-repeat !important;
-	background-position: right 12px center !important;
-	background-size: 16px !important;
-	padding-right: 36px !important;
-	box-shadow: none !important;
-	border-radius: 0;
-	height: auto;
+	border-right: 1px solid #d1d5db;
+	height: 100%;
 }
 
-.mf-phone .mf-cc option {
-	padding: 12px 16px;
-	background-color: #ffffff;
+.mf-phone .eip-combobox-dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 9999;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 6px;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	max-height: 250px;
+	overflow-y: auto;
+	width: max-content;
+	min-width: 150px;
+	padding: 4px 0;
+	margin-top: 4px;
+}
+
+.mf-phone .eip-combobox-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px 8px 10px;
+	cursor: pointer;
+	font-size: 14px;
+	color: #374151;
+}
+
+.mf-phone .eip-combobox-item:hover {
+	background-color: #f3f4f6;
+}
+
+.mf-phone .eip-check {
+	width: 14px;
+	font-weight: bold;
+	display: inline-block;
 	color: #111827;
-	font-weight: 500;
-	font-size: 15px;
 }
 
-.mf-phone .mf-cc option:checked,
-.mf-phone .mf-cc option:hover,
-.mf-phone .mf-cc option:focus {
-	background-color: #1a73e8 !important;
-	color: #ffffff !important;
+.mf-phone .eip-dial-code {
+	font-weight: 500;
+	color: #111827;
 }
 
 .mf-phone .mf-tel {
