@@ -27,17 +27,17 @@
 				var $wrapper = $item.closest('.mf-phone');
 				var $combobox = $item.closest('.eip-combobox');
 				var $selectedContainer = $combobox.find('.eip-combobox-selected');
-				
+
 				var dialCode = $item.data('dial');
 				var countryCode = $item.data('code');
 
 				// Update selected UI
 				$selectedContainer.html('<span class="fi fi-' + countryCode + '"></span><span class="eip-dial-code">' + dialCode + '</span>');
-				
+
 				// Update checkmarks in dropdown
 				$combobox.find('.eip-combobox-item').removeClass('eip-selected');
 				$combobox.find('.eip-check').css('visibility', 'hidden');
-				
+
 				$item.addClass('eip-selected');
 				$item.find('.eip-check').css('visibility', 'visible');
 
@@ -63,7 +63,7 @@
 					var $wrapper = $(this);
 					var $tel = $wrapper.find('.mf-tel');
 					var telValue = $tel.val().trim();
-					
+
 					EIP_Intl_Phone.updateHiddenField($wrapper);
 
 					var $fieldGroup = $wrapper.closest('.elementor-field-group');
@@ -78,7 +78,7 @@
 							$fieldGroup.addClass('elementor-error');
 							var errorMsg = window.eip_intl_phone_i18n ? window.eip_intl_phone_i18n.invalid_number : 'Invalid phone number';
 							$fieldGroup.append('<span class="elementor-message elementor-message-danger">' + errorMsg + '</span>');
-							
+
 							if (!firstErrorField) {
 								firstErrorField = $tel;
 							}
@@ -88,7 +88,7 @@
 						$fieldGroup.addClass('elementor-error');
 						var reqMsg = window.eip_intl_phone_i18n ? window.eip_intl_phone_i18n.required_field : 'This field is required.';
 						$fieldGroup.append('<span class="elementor-message elementor-message-danger">' + reqMsg + '</span>');
-						
+
 						if (!firstErrorField) {
 							firstErrorField = $tel;
 						}
@@ -104,11 +104,11 @@
 			});
 		},
 
-		updateHiddenField: function($wrapper) {
+		updateHiddenField: function ($wrapper) {
 			var $tel = $wrapper.find('.mf-tel');
 			var hiddenId = $wrapper.data('hidden-id');
 			var $selectedItem = $wrapper.find('.eip-combobox-item.eip-selected');
-			
+
 			if (hiddenId && $selectedItem.length) {
 				var dialCode = $selectedItem.data('dial');
 				var telValue = $tel.val().trim();
@@ -123,7 +123,7 @@
 	});
 
 	// Also init on load for non-elementor contexts
-	$(document).ready(function() {
+	$(document).ready(function () {
 		if (typeof elementorFrontend === 'undefined') {
 			EIP_Intl_Phone.init();
 		}

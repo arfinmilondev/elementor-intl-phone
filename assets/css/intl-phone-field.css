@@ -6,17 +6,14 @@
 	display: flex !important;
 	flex-wrap: nowrap !important;
 	align-items: center;
-	border: 1px solid #d1d5db;
-	border-radius: 4px;
-	background-color: #fff;
 	overflow: visible;
-	transition: border-color 0.3s ease;
 	width: 100%;
 	position: relative;
+	padding: 0 !important; /* Reset padding so children can fill the wrapper */
 }
 
 .mf-phone:focus-within {
-	border-color: #3b82f6; 
+	/* Let Elementor handle focus, or add subtle shadow if needed */
 }
 
 .mf-phone .eip-combobox {
@@ -30,11 +27,11 @@
 	align-items: center;
 	gap: 8px;
 	padding: 10px 14px;
-	color: #374151;
+	color: inherit;
 	font-size: 14px;
 	font-weight: 400;
 	cursor: pointer;
-	border-right: 1px solid #d1d5db;
+	border-right: 1px solid rgba(0, 0, 0, 0.1); /* Subtle divider */
 	height: 100%;
 }
 
@@ -87,8 +84,10 @@
 	border: none !important;
 	background-color: transparent !important;
 	padding: 10px 12px !important;
-	color: #374151;
-	font-size: 14px;
+	color: inherit; /* Inherit color from Elementor settings */
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
 	outline: none;
 	box-shadow: none !important;
 	border-radius: 0;

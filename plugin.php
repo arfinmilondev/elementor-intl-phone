@@ -72,5 +72,5 @@ function eip_admin_notice_missing_dependencies() {
 		'<strong>' . esc_html__( 'Elementor Pro', 'elementor-intl-phone' ) . '</strong>'
 	);
 
-	printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', wp_kses_post( $message ) );
 }

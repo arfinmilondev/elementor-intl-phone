@@ -95,7 +95,7 @@ class Intl_Phone extends Field_Base {
 		$form->remove_render_attribute( 'input' . $item_index, 'name' );
 
 		?>
-		<div class="mf-phone" data-hidden-id="<?php echo esc_attr( $item['custom_id'] . '_hidden' ); ?>">
+		<div class="mf-phone elementor-field elementor-field-textual" data-hidden-id="<?php echo esc_attr( $item['custom_id'] . '_hidden' ); ?>">
 			<div class="eip-combobox">
 				<div class="eip-combobox-selected">
 					<?php
@@ -109,14 +109,53 @@ class Intl_Phone extends Field_Base {
 				</div>
 				<div class="eip-combobox-dropdown" style="display: none;">
 					<?php 
-					foreach ( $countries as $code => $data ) {
+					$display_countries = [];
+					$custom_order_str = ! empty( $item['eip_custom_order'] ) ? trim( $item['eip_custom_order'] ) : '';
+					$custom_order_array = [];
+					
+					if ( ! empty( $custom_order_str ) ) {
+						// Parse comma separated values
+						$parts = explode( ',', $custom_order_str );
+						foreach ( $parts as $p ) {
+							$p = strtolower( trim( $p ) );
+							if ( ! empty( $p ) ) {
+								$custom_order_array[] = $p;
+							}
+						}
+					}
+					
+					// Determine the ordered list of countries to display
+					if ( ! empty( $custom_order_array ) ) {
+						// Follow the exact order provided in the text field
+						foreach ( $custom_order_array as $code_lower ) {
+							if ( ! empty( $excluded ) && in_array( $code_lower, $excluded, true ) ) {
+								continue;
+							}
+							$code_upper = strtoupper( $code_lower );
+							if ( isset( $countries[ $code_upper ] ) ) {
+								$display_countries[ $code_upper ] = $countries[ $code_upper ];
+							}
+						}
+					} else {
+						// Fallback to default alphabetical order
+						foreach ( $countries as $code => $data ) {
+							$code_lower = strtolower( $code );
+							
+							if ( ! empty( $allowed ) && ! in_array( $code_lower, $allowed, true ) ) {
+								continue;
+							}
+							
+							if ( ! empty( $excluded ) && in_array( $code_lower, $excluded, true ) ) {
+								continue;
+							}
+							
+							$display_countries[ $code ] = $data;
+						}
+					}
+
+					// Render the ordered list
+					foreach ( $display_countries as $code => $data ) {
 						$code_lower = strtolower( $code );
-						if ( ! empty( $allowed ) && ! in_array( $code_lower, $allowed, true ) ) {
-							continue;
-						}
-						if ( ! empty( $excluded ) && in_array( $code_lower, $excluded, true ) ) {
-							continue;
-						}
 						
 						$dial_code = isset( $data['dial_code'] ) ? '+' . $data['dial_code'] : '';
 						$is_selected = ( $code_lower === $default );
@@ -198,6 +237,19 @@ class Intl_Phone extends Field_Base {
 			'multiple' => true,
 			'default' => [],
 			'description' => esc_html__( 'If empty, all countries are shown.', 'elementor-intl-phone' ),
+			'condition' => $condition,
+			'tab' => 'content',
+			'inner_tab' => 'form_fields_content_tab',
+			'tabs_wrapper' => 'form_fields_tabs',
+		];
+
+		$fields['eip_custom_order'] = [
+			'name' => 'eip_custom_order',
+			'type' => \Elementor\Controls_Manager::TEXT,
+			'label' => esc_html__( 'Custom Display Order', 'elementor-intl-phone' ),
+			'default' => '',
+			'placeholder' => 'e.g. bd, ar, ae',
+			'description' => esc_html__( 'Elementor cannot preserve the exact click sequence in the Allowed Countries box. If you want a STRICT custom order, type the 2-letter country codes here separated by commas (e.g. bd, ar, ae). Leave empty for alphabetical order.', 'elementor-intl-phone' ),
 			'condition' => $condition,
 			'tab' => 'content',
 			'inner_tab' => 'form_fields_content_tab',
