@@ -54,8 +54,9 @@
 				EIP_Intl_Phone.updateHiddenField($wrapper);
 			});
 
-			// Hook into Elementor form submission to validate and populate hidden fields
-			$(document).on('submit_action', function (event, $form) {
+			// Hook into form submission to validate and populate hidden fields
+			$(document).on('click', '.elementor-button[type="submit"]', function (event) {
+				var $form = $(this).closest('form');
 				var isValid = true;
 				var firstErrorField = null;
 
@@ -113,7 +114,7 @@
 				var dialCode = $selectedItem.data('dial');
 				var telValue = $tel.val().trim();
 				var fullNumber = telValue ? dialCode + telValue : '';
-				$('#' + hiddenId).val(fullNumber);
+				$wrapper.next('.eip-hidden-phone').val(fullNumber);
 			}
 		}
 	};
