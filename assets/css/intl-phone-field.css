@@ -78,6 +78,17 @@
 	color: #111827;
 }
 
+.mf-phone .eip-dropdown-icon {
+	margin-left: 2px;
+	color: #6b7280;
+	flex-shrink: 0;
+	transition: transform 0.2s ease;
+}
+
+.mf-phone .eip-combobox-dropdown:not([style*="display: none"]) ~ .eip-combobox-selected .eip-dropdown-icon {
+    /* Optional: flip icon when open. The markup structure might need checking if this exact selector works. */
+}
+
 .mf-phone .mf-tel {
 	flex: 1 1 auto;
 	width: 100%;
